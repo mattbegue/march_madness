@@ -9,6 +9,7 @@ start_date = datetime(2024,11,4)
 end_date = datetime(2025,3,19)
 date = start_date
 
+# Check out https://github.com/henrygd/ncaa-api for the excellent API instructions
 base_url = "https://ncaa-api.henrygd.me"
 
 
@@ -16,7 +17,7 @@ df = pd.DataFrame()
 date = start_date
 for _ in tqdm(range((end_date-start_date).days + 1)):
     datestring = date.strftime('%Y/%m/%d')
-    url = base_url + "/scoreboard/basketball-women/d1/" + datestring + "/all-conf"
+    url = base_url + "/scoreboard/basketball-men/d1/" + datestring + "/all-conf"
     try:
         response = requests.request("GET", url)
         x = json.loads(response.text)
@@ -42,6 +43,6 @@ for _ in tqdm(range((end_date-start_date).days + 1)):
         y['HomeScore'] = game['home']['score']
 
         df = pd.concat([df, pd.DataFrame(y).T], ignore_index=True)
-    df.to_pickle("/Users/mbegue/Desktop/march_madness/data/master_scores.pkl")
+    df.to_pickle("data/master_scores.pkl")
     time.sleep(0.2)
     date += timedelta(days=1)
